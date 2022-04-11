@@ -1,14 +1,16 @@
 import { Injectable , NotFoundException} from '@nestjs/common';
 import { Product } from './product.model';
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable()
 
 export class ProductsService{
     private products: Product[] = [];
 
-    insertProduct(title: string,desc: string, price:number){
-        const prodId = Math.random().toString()
-        const newProduct = new Product(prodId, title,desc,price)
+    insertProduct(title: string,desc: string, price:string){
+        const prodId = uuidv4().toString()
+        const creation= Date().toString()
+        const newProduct = new Product(prodId, title,desc,price,creation)
         this.products.push(newProduct);
         return prodId
     }
@@ -17,11 +19,16 @@ export class ProductsService{
         return [...this.products];
     }
 
-    updateProduct(productId : string, title: string, desc: string, price: number){
+    getSingleProduct(productId: string){
+        const product = this.findProduct(productId);
+        return {...product};
+    }
+
+    updateProduct(productId : string, title: string, desc: string, price: string,creation:string){
         const [product,index]= this.findProduct(productId);
         const updatedProduct= {...product};
         if (title){
-            updatedProduct.title= title
+            updatedProduct.task= title
         }
 
         if (desc){
@@ -29,7 +36,7 @@ export class ProductsService{
         }
 
         if (price){
-            updatedProduct.price= price
+            updatedProduct.status= price
         }
         this.products[index] = updatedProduct;
 
