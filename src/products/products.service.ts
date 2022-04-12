@@ -5,7 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 @Injectable()
 
 export class ProductsService{
-    private products: Product[] = [];
+     products: Product[] = [];
 
     insertProduct(title: string,desc: string, price:string){
         const prodId = uuidv4().toString()
